@@ -1624,6 +1624,10 @@ if(ourTableView != tableview)	\
 
 		[table endUpdates];
 	}
+	
+	if (editingStyle==UITableViewCellEditingStyleInsert) {
+    [self triggerActionForIndexPath:indexPath fromPath:nil tableView:ourTableView wasAccessory:NO search:NO name:@"insert"];
+  }
 }
 
 // Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.
@@ -1682,6 +1686,9 @@ if(ourTableView != tableview)	\
 	//Actually, it's easier than that. editable or editing causes this to default true. Otherwise, it's the editable flag.
 	if ([TiUtils boolValue:[row valueForKey:@"editable"] def:editable || editing])
 	{
+	  if ([TiUtils intValue:[row valueForUndefinedKey:@"insert"]]) {
+	    return UITableViewCellEditingStyleInsert;
+	  }
 		return UITableViewCellEditingStyleDelete;
 	}
 	return UITableViewCellEditingStyleNone;
